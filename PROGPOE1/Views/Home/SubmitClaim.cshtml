@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Submit Claim";
+}
+<h2>Submit Claim for 2025</h2>
+<form asp-action="SubmitClaim" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="month">Month</label>
+        <select id="month" name="month" class="form-control">
+            <option value="2025-01">January 2025</option>
+            <option value="2025-02">February 2025</option>
+            <!-- Add options up to December 2025 -->
+            <option value="2025-12">December 2025</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="hours">Hours Worked</label>
+        <input id="hours" name="hours" type="number" min="1" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="documents">Supporting Documents</label>
+        <input id="documents" name="documents" type="file" multiple class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

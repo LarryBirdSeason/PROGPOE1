@@ -1,0 +1,52 @@
+﻿@model List<PROGPOE1    .Models.Claim>
+@{
+    ViewData["Title"] = ViewBag.UserRole + " Dashboard";
+}
+<h2>@ViewData["Title"]</h2>
+@if (ViewBag.UserRole == "lecturer")
+{
+    <a asp-action="SubmitClaim" class="btn btn-success mb-3">Submit New Claim</a>
+}
+<h4>@(ViewBag.UserRole == "lecturer" ? "Your Claims" : "Pending Claims")</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Month</th>
+            <th>Hours</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Id</td>
+                <td>@claim.Month</td>
+                <td>@claim.Hours</td>
+                <td>$@claim.Amount</td>
+                <td>@claim.Status</td>
+                <td>
+                    <a asp-action="ViewClaim" asp-route-id="@claim.Id" class="btn btn-info btn-sm">View/Track</a>
+                    @if (ViewBag.UserRole != "lecturer")
+                    {
+                        <form asp-action="UpdateStatus" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@claim.Id" />
+                            <input type="hidden" name="status" value="Approved" />
+                            <input type="hidden" name="notes" value="" /> <!-- Simplified; add prompt in prod -->
+                            <button type="submit" class="btn btn-warning btn-sm">Approve</button>
+                        </form>
+                        <form asp-action="UpdateStatus" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@claim.Id" />
+                            <input type="hidden" name="status" value="Rejected" />
+                            <input type="hidden" name="notes" value="" />
+                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
