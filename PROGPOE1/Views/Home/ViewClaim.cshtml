@@ -1,0 +1,32 @@
+﻿@model PROGPOE1.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details";
+}
+<h2>Claim Details: ID @Model.Id (@Model.Month)</h2>
+<p>Hours: @Model.Hours | Amount: $@Model.Amount | Status: @Model.Status</p>
+<p>Documents: @(string.Join(", ", Model.Documents) ?? "None")</p>
+<p>Notes: @Model.Notes</p>
+@if (ViewBag.UserRole == "lecturer" && Model.Status == "Submitted")
+{
+    <form asp-action="AddDocuments" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="form-group">
+            <label for="documents">Add Documents</label>
+            <input id="documents" name="documents" type="file" multiple class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-secondary">Add Documents</button>
+    </form>
+}
+@if (ViewBag.UserRole != "lecturer")
+{
+    <form asp-action="UpdateStatus" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" class="form-control"></textarea>
+        </div>
+        <button type="submit" name="status" value="Approved" class="btn btn-warning">Approve</button>
+        <button type="submit" name="status" value="Rejected" class="btn btn-danger">Reject</button>
+    </form>
+}
+<a asp-action="Dashboard" class="btn btn-secondary mt-2">Back to Dashboard</a>
